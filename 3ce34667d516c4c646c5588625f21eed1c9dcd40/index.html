@@ -1,10 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smevy World Bank</title>
+
+    <style>
+        #balance {
+            font-size: 1.5em; /* Adjust the font size as needed */
+        }
+    </style>
+</head>
+<body>
+
 <h1>Smevy World Bank</h1>
 <h2>Reese Diller</h2>
 
-<h3>Balance:1500</h3>
+<div id="balance"></div>
 
-<h3>City Card Status:None</h3>
+<h3>City Card Status: None</h3>
+<h3>Fast Pass Status: None</h3>
+<h3>Bank Number: 10567</h3>
 
-<h3>Fast Pass Status:None</h3>
+<script>
+    // Replace 'YOUR_API_KEY' with your actual API key
+    const apiKey = 'AIzaSyCTLv7w6jZyjA9W6U4zhi16i7UB2rDyksU';
+    const sheetId = '1GW_3joysdv81gIT27K2znqdai7NMhSs0mKTNrj3haGE';
+    const range = 'Reese!C1'; // Replace with the desired cell reference
 
-<h3>Bank Number:10567</h3>
+    // Example API request URL
+    const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+
+    // Fetch data from Google Sheets API
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const balanceDiv = document.getElementById('balance');
+
+            if (data.values && data.values.length > 0) {
+                // Extract the balance value and update the HTML
+                const balanceValue = data.values[0][0];
+                balanceDiv.innerHTML = `<h3>Balance: ${balanceValue}</h3>`;
+            } else {
+                console.error('Unexpected data structure or empty data:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+</script>
+
+</body>
+</html>
